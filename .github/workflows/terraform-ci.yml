@@ -34,7 +34,7 @@ jobs:
           tflint_version: v0.53.0
 
       - name: Run TFLint
-        working-directory: infra
+        working-directory: .
         run: tflint --init && tflint
 
   # security:
