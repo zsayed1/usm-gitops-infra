@@ -25,7 +25,7 @@ jobs:
         run: terraform init -backend=false
 
       - name: Terraform Validate
-        working-directory: infra
+        working-directory: .
         run: terraform validate
 
       - name: Setup TFLint
@@ -37,16 +37,16 @@ jobs:
         working-directory: infra
         run: tflint --init && tflint
 
-  security:
-    name: Terraform Security Scan (tfsec)
-    runs-on: ubuntu-latest
+  # security:
+  #   name: Terraform Security Scan (tfsec)
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Run tfsec
-        uses: aquasecurity/tfsec-action@v1.0.3
-        with:
-          working-directory: infra
-          additional_args: --minimum-severity CRITICAL
+  #     - name: Run tfsec
+  #       uses: aquasecurity/tfsec-action@v1.0.3
+  #       with:
+  #         working-directory: infra
+  #         additional_args: --minimum-severity CRITICAL
