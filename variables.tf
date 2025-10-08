@@ -80,3 +80,31 @@ variable "tags" {
     ManagedBy   = "terraform"
   }
 }
+
+#########################################
+# EKS Configuration
+#########################################
+
+variable "cluster_base_name" {
+  description = "Base name for the EKS cluster; env suffix appended automatically"
+  type        = string
+  default     = "usmobile-eks"
+}
+
+variable "cluster_version" {
+  description = "EKS Kubernetes version"
+  type        = string
+  default     = "1.32"
+}
+
+variable "node_count" {
+  description = "Desired node count for default node group"
+  type        = number
+  default     = 2
+}
+
+variable "instance_type" {
+  description = "EC2 instance type for EKS nodes"
+  type        = string
+  default     = "t3.medium"
+}
