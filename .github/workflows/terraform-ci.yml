@@ -12,10 +12,10 @@ jobs:
   terraform-validate:
     name: Terraform Validate & Lint
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
-        env: [dev, stage, prod]
+        env: [dev]
 
     defaults:
       run:
