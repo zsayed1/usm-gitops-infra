@@ -19,4 +19,8 @@ module "eks_infra" {
 
   eks_managed_node_groups = var.eks_managed_node_groups
   cluster_version         = var.cluster_version
+    tags = merge(var.tags, {
+    Environment = var.env
+    Terraform   = "true"
+  })
 }
