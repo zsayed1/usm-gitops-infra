@@ -54,6 +54,26 @@ variable "public_subnets" {
   type        = list(string)
 }
 
+variable "enable_flow_logs" {
+  type        = bool
+  default     = true
+}
+
+variable "flow_log_traffic_type" {
+  type        = string
+  default     = "ALL"
+}
+
+variable "flow_log_log_group_name" {
+  type        = string
+  default     = "/aws/vpc/flow-logs"
+}
+
+variable "flow_log_retention_in_days" {
+  type        = number
+  default     = 30
+}
+
 #############################
 # 🐳 ECR and Helm Repos
 #############################

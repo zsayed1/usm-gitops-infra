@@ -13,6 +13,11 @@ private_subnets = ["10.50.1.0/24", "10.50.2.0/24", "10.50.3.0/24"]
 public_subnets  = ["10.50.101.0/24", "10.50.102.0/24", "10.50.103.0/24"]
 azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
 
+enable_flow_logs           = true
+flow_log_traffic_type      = "ALL"
+flow_log_log_group_name    = "/aws/vpc/flow-logs"
+flow_log_retention_in_days = 30  
+
 # -----------------------------
 # ECR (App & Helm Repos)
 # -----------------------------
