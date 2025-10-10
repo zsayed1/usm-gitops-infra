@@ -21,8 +21,8 @@ flow_log_retention_in_days = 30
 # -----------------------------
 # ECR (App & Helm Repos)
 # -----------------------------
-ecr_app_name  = "usm-apps"
-ecr_helm_name = "helm/usm-apps"
+ecr_app_name  = "usm-app"
+ecr_helm_name = "helm-usm-app"
 
 # -----------------------------
 # GitHub OIDC Integration
