@@ -1,0 +1,37 @@
+name: Terraform Docs Automation
+
+# on:
+#   push:
+#     branches: [ dev ]
+#     # branches:
+#     #   - "**"   
+
+jobs:
+  terraform-docs:
+    name: Generate Terraform Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install terraform-docs
+        run: |
+          curl -sSLo terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.17.0/terraform-docs-v0.17.0-linux-amd64.tar.gz
+          tar -xzf terraform-docs.tar.gz
+          sudo mv terraform-docs /usr/local/bin/
+
+      - name: Generate docs for all modules
+        run: |
+          for dir in $(find modules -type d -maxdepth 1 -mindepth 1); do
+            echo "📄 Generating docs for $dir"
+            terraform-docs markdown table $dir > $dir/README.md
+          done
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add modules/*/README.md
+          git commit -m "chore: update terraform docs" || echo "✅ No changes to commit"
+          git push
