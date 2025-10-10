@@ -9,6 +9,10 @@ module "eks_infra" {
   private_subnets       = var.private_subnets
   public_subnets        = var.public_subnets
   azs                   = var.azs
+  enable_flow_logs           = var.enable_flow_logs
+  flow_log_traffic_type      = var.flow_log_traffic_type
+  flow_log_log_group_name    = var.flow_log_log_group_name
+  flow_log_retention_in_days = var.flow_log_retention_in_days
 
   ecr_app_name          = var.ecr_app_name
   ecr_helm_name         = var.ecr_helm_name
@@ -53,22 +57,3 @@ resource "kubernetes_config_map" "aws_auth" {
   depends_on = [module.eks_infra]
 }
 
-resource "kubernetes_cluster_role_binding" "terraform_admin" {
-  metadata {
-    name = "terraform-admin"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "cluster-admin"
-  }
-
-  subject {
-    kind      = "User"
-    name      = "arn:aws:iam::${var.account_id}:user/terraform-user"
-    api_group = "rbac.authorization.k8s.io"
-  }
-
-  depends_on = [kubernetes_config_map.aws_auth]
-}

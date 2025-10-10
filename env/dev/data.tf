@@ -8,6 +8,7 @@
 
 data "aws_eks_node_groups" "all" {
   cluster_name = "${var.namespace}-${var.env}-eks"
+  depends_on = [module.eks_infra]
 }
 
 locals {

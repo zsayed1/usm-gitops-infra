@@ -158,3 +158,30 @@ variable "github_repo_filter" {
   description = "GitHub repo filter for OIDC role assumption (e.g., repo:org/repo:*)"
   type        = string
 }
+
+
+# FLowLogs
+
+variable "enable_flow_logs" {
+  description = "Enable VPC Flow Logs"
+  type        = bool
+  default     = true
+}
+
+variable "flow_log_traffic_type" {
+  description = "The type of traffic to capture: ACCEPT, REJECT, or ALL"
+  type        = string
+  default     = "ALL"
+}
+
+variable "flow_log_log_group_name" {
+  description = "CloudWatch log group name for VPC Flow Logs"
+  type        = string
+  default     = "/aws/vpc/flow-logs"
+}
+
+variable "flow_log_retention_in_days" {
+  description = "Retention period for flow logs in CloudWatch"
+  type        = number
+  default     = 30
+}

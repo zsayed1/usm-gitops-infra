@@ -1,7 +1,11 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
 data:
   mapRoles: |
-    - rolearn: arn:aws:iam::879381282588:role/default-eks-node-group-20251010010356531600000001
+    - rolearn: arn:aws:iam::879381282588:role/<your-nodegroup-role>
       username: system:node:{{EC2PrivateDNSName}}
       groups:
         - system:bootstrappers
@@ -11,13 +15,4 @@ data:
       username: terraform-user
       groups:
         - system:masters
-kind: ConfigMap
-metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"mapRoles":"- rolearn: arn:aws:iam::879381282588:role/default-eks-node-group-20251010010356531600000001\n  username: system:node:{{EC2PrivateDNSName}}\n  groups:\n    - system:bootstrappers\n    - system:nodes\n","mapUsers":"- userarn: arn:aws:iam::879381282588:user/terraform-user\n  username: terraform-user\n  groups:\n    - system:masters\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"aws-auth","namespace":"kube-system"}}
-  creationTimestamp: "2025-10-10T01:14:22Z"
-  name: aws-auth
-  namespace: kube-system
-  resourceVersion: "5833"
-  uid: f2e8f3ed-923b-440d-a7fb-3f035d075a29
+
