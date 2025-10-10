@@ -51,6 +51,11 @@ output "eks_oidc_issuer" {
   value       = module.eks.cluster_oidc_issuer_url
 }
 
+output "cluster_certificate_authority_data" {
+  description = "EKS cluster CA data"
+  value       = module.eks.cluster_certificate_authority_data
+}
+
 ########################
 # ECR Outputs
 ########################

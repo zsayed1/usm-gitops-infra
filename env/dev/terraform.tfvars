@@ -4,7 +4,7 @@
 env        = "dev"
 namespace  = "usm"
 region     = "us-east-1"
-
+account_id = "879381282588"
 # -----------------------------
 # Networking
 # -----------------------------
@@ -16,8 +16,8 @@ azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
 # -----------------------------
 # ECR (App & Helm Repos)
 # -----------------------------
-ecr_app_name  = "usm-app"
-ecr_helm_name = "helm/usm-app"
+ecr_app_name  = "usm-apps"
+ecr_helm_name = "helm/usm-apps"
 
 # -----------------------------
 # GitHub OIDC Integration
@@ -31,6 +31,7 @@ github_repo_filter     = "repo:zsayed1/usm-app:*"   # 👈 update with your org/
 # -----------------------------
 eks_managed_node_groups = {
   default = {
+    name           = "default"
     instance_types = ["t3.large"]
     desired_size   = 3
     min_size       = 2

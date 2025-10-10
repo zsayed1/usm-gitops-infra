@@ -25,6 +25,11 @@ variable "cluster_version" {
   default     = "1.30"
 }
 
+variable "account_id" {
+  description = "Kubernetes version for the EKS cluster"
+  type        = string
+}
+
 #############################
 # 🌐 Networking
 #############################
