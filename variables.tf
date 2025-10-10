@@ -28,9 +28,8 @@ variable "cluster_version" {
 }
 
 variable "tags" {
-  description = "A map of tags to apply to all resources"
-  type        = map(string)
-  default     = {}
+  type = map(string)
+  description = "Tags to apply to resources"
 }
 
 ########################
