@@ -19,7 +19,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: envs/${{ matrix.env }}
+        working-directory: env/${{ matrix.env }}
 
     steps:
       - name: 📥 Checkout code
@@ -53,11 +53,11 @@ jobs:
 
     strategy:
       matrix:
-        env: [dev, stage, prod]
+        env: [dev]
 
     defaults:
       run:
-        working-directory: envs/${{ matrix.env }}
+        working-directory: env/${{ matrix.env }}
 
     steps:
       - name: 📥 Checkout code
