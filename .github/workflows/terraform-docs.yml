@@ -1,10 +1,10 @@
 name: Terraform Docs Automation
 
-on:
-  push:
-    branches: [ dev ]
-    # branches:
-    #   - "**"   
+# on:
+#   push:
+#     branches: [ dev ]
+#     # branches:
+#     #   - "**"   
 
 jobs:
   terraform-docs:
