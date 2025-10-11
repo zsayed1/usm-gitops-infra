@@ -41,11 +41,6 @@ output "eks_cluster_oidc_issuer" {
   value       = module.eks_infra.eks_cluster_oidc_issuer
 }
 
-output "node_security_group_id" {
-  description = "Security group ID of the EKS managed node group"
-  value       = module.eks_infra.node_security_group_id
-}
-
 ##############################
 # 📦 ECR Outputs
 ##############################
