@@ -1,59 +1,38 @@
-########################
-# General Settings
-########################
+##############################
+# Global Settings
+##############################
 variable "namespace" {
-  description = "Project namespace prefix for resources (e.g., usm)"
+  description = "Project or application namespace"
+  type        = string
+}
+
+variable "stage" {
+  description = "Deployment stage (e.g., dev, staging, prod)"
   type        = string
 }
 
 variable "env" {
-  description = "Deployment environment (e.g., dev, stage, prod)"
-  type        = string
-
-  validation {
-    condition     = contains(["dev", "stage", "prod"], var.env)
-    error_message = "Environment must be one of: dev, stage, prod."
-  }
-}
-
-variable "region" {
-  description = "AWS region where resources will be deployed"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "cluster_version" {
-  description = "EKS cluster version (e.g., 1.30)"
+  description = "Environment name (e.g., dev, qa, prod)"
   type        = string
 }
 
 variable "tags" {
-  type = map(string)
-  description = "Tags to apply to resources"
-  default = {}
+  description = "Additional tags to apply to all resources"
+  type        = map(string)
+  default     = {}
 }
 
-########################
-# Networking / VPC
-########################
+##############################
+# VPC Settings
+##############################
 variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
-
-  validation {
-    condition     = can(cidrhost(var.vpc_cidr, 0))
-    error_message = "The VPC CIDR must be a valid CIDR block (e.g., 10.0.0.0/16)."
-  }
 }
 
 variable "azs" {
-  description = "List of availability zones"
+  description = "Availability Zones to use"
   type        = list(string)
-
-  validation {
-    condition     = length(var.azs) >= 2
-    error_message = "You must provide at least two availability zones."
-  }
 }
 
 variable "private_subnets" {
@@ -66,95 +45,78 @@ variable "public_subnets" {
   type        = list(string)
 }
 
-variable "enable_nat_gateway" {
-  description = "Whether to enable NAT Gateway"
-  type        = bool
-  default     = true
+variable "flow_log_retention_days" {
+  description = "Number of days to retain VPC Flow Logs in CloudWatch"
+  type        = number
+  default     = 14
 }
 
-variable "single_nat_gateway" {
-  description = "Use a single NAT Gateway instead of one per AZ"
-  type        = bool
-  default     = true
-}
-
-########################
-# EKS Cluster Settings
-########################
-variable "enable_irsa" {
-  description = "Enable IAM Roles for Service Accounts (IRSA)"
-  type        = bool
-  default     = true
-}
-
-variable "cluster_endpoint_public_access" {
-  description = "Enable public access to the EKS API server endpoint"
-  type        = bool
-  default     = true
-}
-
-variable "cluster_endpoint_private_access" {
-  description = "Enable private access to the EKS API server endpoint"
-  type        = bool
-  default     = false
-}
-
-variable "cluster_enabled_log_types" {
-  description = "List of control plane log types to enable"
-  type        = list(string)
-  default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-}
-
-variable "eks_managed_node_groups" {
-  description = "Map of EKS managed node groups"
-  type = map(object({
-    instance_types = list(string)
-    desired_size   = number
-    min_size       = number
-    max_size       = number
-    capacity_type  = string
-  }))
-}
-
-########################
-# ECR Settings
-########################
-variable "ecr_app_name" {
-  description = "Name of the ECR repository for application Docker images"
+##############################
+# EKS Settings
+##############################
+variable "cluster_version" {
+  description = "Kubernetes version for the EKS cluster"
   type        = string
+  default     = "1.29"
+}
 
-  validation {
-    condition     = length(var.ecr_app_name) > 1
-    error_message = "ECR app repository name cannot be empty."
-  }
+variable "node_instance_types" {
+  description = "Instance types for EKS managed node group"
+  type        = list(string)
+  default     = ["t3.medium"]
+}
+
+variable "node_desired_size" {
+  description = "Desired number of nodes in the managed node group"
+  type        = number
+  default     = 2
+}
+
+variable "node_min_size" {
+  description = "Minimum number of nodes in the managed node group"
+  type        = number
+  default     = 1
+}
+
+variable "node_max_size" {
+  description = "Maximum number of nodes in the managed node group"
+  type        = number
+  default     = 3
+}
+
+variable "node_capacity_type" {
+  description = "Capacity type for EKS nodes (ON_DEMAND or SPOT)"
+  type        = string
+  default     = "ON_DEMAND"
+}
+
+##############################
+# ECR Settings
+##############################
+variable "ecr_app_name" {
+  description = "Name of the ECR repository for application images"
+  type        = string
 }
 
 variable "ecr_helm_name" {
-  description = "Name of the ECR repository for Helm charts (OCI)"
+  description = "Name of the ECR repository for Helm charts"
   type        = string
-
-  validation {
-    condition     = length(var.ecr_helm_name) > 1
-    error_message = "ECR Helm repository name cannot be empty."
-  }
 }
 
-########################
+##############################
 # GitHub OIDC Settings
-########################
-
+##############################
 variable "github_oidc_url" {
-  description = "OIDC provider URL for GitHub Actions"
+  description = "GitHub OIDC provider URL"
   type        = string
 }
 
 variable "github_oidc_thumbprint" {
-  description = "Thumbprint for GitHub OIDC provider"
+  description = "GitHub OIDC thumbprint"
   type        = string
-
 }
 
 variable "github_repo_filter" {
-  description = "GitHub repo filter for OIDC role assumption (e.g., repo:org/repo:*)"
+  description = "Filter for GitHub repository (e.g., repo:owner/name:ref:refs/heads/main)"
   type        = string
 }

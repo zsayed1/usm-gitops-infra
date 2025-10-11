@@ -1,34 +1,84 @@
-output "eks_cluster_name" {
-  description = "EKS cluster name"
-  value       = module.eks_infra.eks_cluster_name
-}
-
-output "eks_cluster_endpoint" {
-  description = "EKS cluster API endpoint"
-  value       = module.eks_infra.eks_cluster_endpoint
-}
+##############################
+# 🌐 VPC Outputs
+##############################
 
 output "vpc_id" {
-  description = "VPC ID"
+  description = "The ID of the VPC created by the module"
   value       = module.eks_infra.vpc_id
 }
 
 output "private_subnets" {
-  description = "Private subnet IDs"
+  description = "List of private subnet IDs created by the VPC module"
   value       = module.eks_infra.private_subnets
 }
 
 output "public_subnets" {
-  description = "Public subnet IDs"
+  description = "List of public subnet IDs created by the VPC module"
   value       = module.eks_infra.public_subnets
 }
 
-output "ecr_app_repository_url" {
-  description = "ECR repository for app images"
-  value       = module.eks_infra.ecr_app_repository_url
+##############################
+# ☸️ EKS Outputs
+##############################
+
+output "eks_cluster_name" {
+  description = "The name of the EKS cluster"
+  value       = module.eks_infra.eks_cluster_name
 }
 
-output "ecr_helm_repository_url" {
-  description = "ECR repository for Helm charts"
-  value       = module.eks_infra.ecr_helm_repository_url
+output "eks_cluster_arn" {
+  description = "The ARN of the EKS cluster"
+  value       = module.eks_infra.eks_cluster_arn
+}
+
+output "eks_cluster_endpoint" {
+  description = "The endpoint URL of the EKS cluster API server"
+  value       = module.eks_infra.eks_cluster_endpoint
+}
+
+output "eks_cluster_oidc_issuer" {
+  description = "The OIDC issuer URL for the EKS cluster"
+  value       = module.eks_infra.eks_cluster_oidc_issuer
+}
+
+##############################
+# 📦 ECR Outputs
+##############################
+
+output "ecr_app_repo_url" {
+  description = "The repository URL of the application ECR"
+  value       = module.eks_infra.ecr_app_repo_url
+}
+
+output "ecr_helm_repo_url" {
+  description = "The repository URL of the Helm chart ECR"
+  value       = module.eks_infra.ecr_helm_repo_url
+}
+
+##############################
+# 🔐 GitHub OIDC / IAM Outputs
+##############################
+
+output "github_oidc_provider_arn" {
+  description = "ARN of the GitHub OIDC identity provider"
+  value       = module.eks_infra.github_oidc_provider_arn
+}
+
+output "github_actions_role_arn" {
+  description = "ARN of the IAM role assumed by GitHub Actions"
+  value       = module.eks_infra.github_actions_role_arn
+}
+
+##############################
+# 📊 Useful Combined Outputs
+##############################
+
+output "cluster_access_command" {
+  description = "Command to update your kubeconfig and access the EKS cluster"
+  value       = "aws eks update-kubeconfig --region ${var.region} --name ${module.eks_infra.eks_cluster_name}"
+}
+
+output "eks_dashboard_url" {
+  description = "URL of the Kubernetes dashboard (if enabled)"
+  value       = "https://${module.eks_infra.eks_cluster_endpoint}/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"
 }
