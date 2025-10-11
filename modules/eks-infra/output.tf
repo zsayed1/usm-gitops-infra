@@ -64,3 +64,8 @@ output "github_actions_role_arn" {
   description = "ARN of the IAM role for GitHub Actions"
   value       = aws_iam_role.github_actions.arn
 }
+
+output "node_security_group_id" {
+  description = "Security group ID of the EKS managed node group"
+  value       = module.eks.node_security_group_id
+}
