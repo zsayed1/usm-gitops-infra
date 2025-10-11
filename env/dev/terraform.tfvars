@@ -35,12 +35,12 @@ node_capacity_type  = "ON_DEMAND"
 ##############################
 # ECR Settings
 ##############################
-ecr_app_name  = "test-app-repo"
-ecr_helm_name = "test-helm-repo"
+ecr_app_name  = "usm-app"
+ecr_helm_name = "helm-usm-app"
 
 ##############################
 # GitHub OIDC Settings
 ##############################
 github_oidc_url         = "https://token.actions.githubusercontent.com"
 github_oidc_thumbprint  = "9e99a48a9960b14926bb7f3b02e22da0ecd0c2c4"
-github_repo_filter      = "repo:usmobile/gitops-platform:ref:refs/heads/main"
+github_repo_filter      = "repo:zsayed1/usm-app:ref:refs/heads/*"

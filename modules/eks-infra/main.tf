@@ -142,7 +142,7 @@ resource "aws_iam_openid_connect_provider" "github" {
 }
 
 ##############################
-# IAM Role for GitHub Actions
+# IAM Role for GitHub Actions OIDC
 ##############################
 resource "aws_iam_role" "github_actions" {
   name = "${var.namespace}-${var.env}-github-actions-role"
@@ -159,6 +159,9 @@ resource "aws_iam_role" "github_actions" {
         Condition = {
           StringLike = {
             "token.actions.githubusercontent.com:sub" = var.github_repo_filter
+          }
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
         }
       }
