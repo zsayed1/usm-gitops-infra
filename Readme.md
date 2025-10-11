@@ -11,7 +11,8 @@ A Terraform module to provision a complete GitOps-ready **EKS platform on AWS**,
 
 ## 📊 Architecture Diagram
 
-https://app.eraser.io/workspace/cI5t7dgAnjsANJNsmVsP?origin=share
+<img width="3034" height="1144" alt="image" src="https://github.com/user-attachments/assets/1bd4c47e-4fc7-4ca5-937e-76d9d3076bf9" />
+
 
 ## 📁 Project Structure
 
