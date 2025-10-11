@@ -43,4 +43,4 @@ ecr_helm_name = "test-helm-repo"
 ##############################
 github_oidc_url         = "https://token.actions.githubusercontent.com"
 github_oidc_thumbprint  = "9e99a48a9960b14926bb7f3b02e22da0ecd0c2c4"
-github_repo_filter      = "repo:usmobile/gitops-platform:ref:refs/heads/main"
+github_repo_filter      = "repo:zsayed1/usm-app:ref:refs/heads/*"
