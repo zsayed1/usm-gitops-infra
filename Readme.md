@@ -211,6 +211,134 @@ source = "github.com/zsayed1/usm-gitops-infra?ref=v2.0.0"
 
 ---
 
+# 🔬 GitHub Actions CI Tests for Terraform Module
+
+This repository uses **GitHub Actions** to automatically test, validate, and secure every pull request and push to the `main` branch. The CI pipeline ensures that the Terraform code in this module is always production-ready before it’s merged or released.
+
+---
+
+## 🧪 What We Test in CI
+
+### 1. ✅ Terraform Formatting (`terraform fmt`)
+We enforce consistent Terraform code style using `terraform fmt`.  
+This helps ensure readability and prevents formatting-related diffs in pull requests.
+
+```yaml
+- name: Terraform Format
+  run: terraform fmt -check -recursive
+```
+
+---
+
+### 2. 🧰 Validation (`terraform validate`)
+We run `terraform validate` to confirm the configuration is syntactically correct and all variables, types, and references are valid.  
+This step catches many issues before they ever reach AWS.
+
+```yaml
+- name: Terraform Validate
+  run: terraform validate
+```
+
+---
+
+### 3. 🔐 Security Scanning (`tfsec`)
+We run [tfsec](https://aquasecurity.github.io/tfsec/) to perform static analysis and detect potential security misconfigurations, such as:
+
+- Publicly exposed security groups  
+- Unencrypted storage buckets or volumes  
+- Missing IAM policies or overly permissive roles  
+
+```yaml
+- name: Run tfsec Security Scan
+  uses: aquasecurity/tfsec-action@v1.0.0
+```
+
+---
+
+### 4. 📊 Terraform Plan (Dry Run)
+We run a `terraform plan` against sample variable files (like `terraform.tfvars.example` or `env/dev/terraform.tfvars`) to ensure the module successfully generates an execution plan without errors.
+
+This simulates a real deployment **without creating resources** — ideal for verifying correctness and reviewing infrastructure changes during pull requests.
+
+```yaml
+- name: Terraform Plan
+  run: terraform plan -var-file=terraform.tfvars.example -out=plan.out
+```
+
+---
+
+### 5. 🧪 (Optional) Sandbox Apply & Destroy
+In advanced setups, the CI workflow can deploy resources into a **temporary sandbox AWS account**, validate the deployment (e.g., `kubectl get nodes` on EKS), and then destroy them.  
+This is typically reserved for nightly builds or pre-release pipelines.
+
+---
+
+## 📈 Why These Tests Matter
+
+✅ **Prevent Errors Early:** Validate syntax and logic before anything reaches AWS.  
+🔐 **Secure by Default:** Automatically scan for misconfigurations and security risks.  
+📊 **Predictable Deployments:** Use `terraform plan` to verify changes before merging.  
+🤖 **Continuous Confidence:** Every pull request and commit is tested automatically.
+
+---
+
+## 📦 Example CI Workflow
+
+Here’s a simplified version of the CI workflow (`.github/workflows/ci.yml`):
+
+```yaml
+name: Terraform Module CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.13.3
+
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Run tfsec Security Scan
+        uses: aquasecurity/tfsec-action@v1.0.0
+
+      - name: Terraform Plan
+        run: terraform plan -var-file=terraform.tfvars.example -out=plan.out
+```
+
+---
+
+## 🚀 Outcome
+
+With this pipeline in place, every change to your Terraform codebase is:
+
+- Formatted consistently  
+- Validated for syntax and structure  
+- Scanned for security risks  
+- Verified to generate a valid execution plan  
+
+This ensures the module is always **safe, stable, and production-ready** before being deployed or released.
+
+
+---
+
 ## 🤝 Contributing
 
 Contributions and PRs are welcome! Please open an issue if you find a bug or need a new feature.
