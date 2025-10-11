@@ -162,7 +162,7 @@ Once tagged (e.g., `v1.0.0`), this module can be used directly in another projec
 
 ```hcl
 module "eks_infra" {
-  source = "github.com/zsayed1/usm-gitops-infra//modules/eks-infra?ref=v1.0.0"
+  source = "github.com/zsayed1/usm-gitops-infra//modules/eks-infra?ref=v2.0.0"
 
   region           = "us-east-1"
   namespace        = "test"
