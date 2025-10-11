@@ -39,6 +39,11 @@ output "eks_cluster_oidc_issuer" {
   value       = module.eks.cluster_oidc_issuer_url
 }
 
+output "cluster_certificate_authority_data" {
+  description = "Base64 encoded certificate authority data"
+  value       = module.eks.cluster_certificate_authority_data
+}
+
 ##############################
 # ECR Outputs
 ##############################

@@ -41,6 +41,11 @@ output "eks_cluster_oidc_issuer" {
   value       = module.eks_infra.eks_cluster_oidc_issuer
 }
 
+# output "cluster_certificate_authority_data" {
+#   description = "Base64 encoded certificate authority data required to communicate with the cluster"
+#   value       = module.eks_infra.cluster_certificate_authority_data
+# }
+
 ##############################
 # 📦 ECR Outputs
 ##############################

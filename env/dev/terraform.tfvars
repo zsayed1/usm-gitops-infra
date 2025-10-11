@@ -44,3 +44,18 @@ ecr_helm_name = "test-helm-repo"
 github_oidc_url         = "https://token.actions.githubusercontent.com"
 github_oidc_thumbprint  = "9e99a48a9960b14926bb7f3b02e22da0ecd0c2c4"
 github_repo_filter      = "repo:usmobile/gitops-platform:ref:refs/heads/main"
+
+##############################
+# ArgoCD Deployment Settings
+##############################
+
+install_argocd  = true
+release_name    = "argocd"
+repository      = "https://argoproj.github.io/argo-helm"
+chart           = "argo-cd"
+chart_version   = "5.46.7"
+create_namespace = true
+argo_namespace   = "argocd"
+
+service_type    = "LoadBalancer"
+extra_args      = ["--insecure"]

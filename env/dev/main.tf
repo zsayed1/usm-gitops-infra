@@ -27,3 +27,17 @@ module "eks_infra" {
 
   tags                   = var.tags
 }
+
+# module "argocd" {
+#   count            = var.install_argocd ? 1 : 0
+#   source           = "../../modules/argocd"
+#   chart_version    = var.chart_version
+#   namespace        = var.argo_namespace
+#   service_type     = var.service_type
+#   extra_args       = var.extra_args
+#   release_name     = var.release_name
+#   repository       = var.repository
+#   chart            = var.chart
+#   create_namespace = var.create_namespace
+#   depends_on       = [module.eks_infra]
+# }

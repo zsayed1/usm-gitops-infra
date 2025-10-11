@@ -236,3 +236,69 @@ variable "github_repo_filter" {
     error_message = "GitHub repo filter must start with 'repo:'."
   }
 }
+
+##############################
+# Argo
+##############################
+
+variable "install_argocd" {
+  description = "Whether to install Argo CD"
+  type        = bool
+  default     = true
+}
+
+##############################
+# ArgoCD Helm Release Variables
+##############################
+
+variable "release_name" {
+  description = "Name of the Argo CD Helm release"
+  type        = string
+  default     = "argocd"
+}
+
+variable "repository" {
+  description = "Helm repository URL for Argo CD"
+  type        = string
+  default     = "https://argoproj.github.io/argo-helm"
+}
+
+variable "chart" {
+  description = "Helm chart name for Argo CD"
+  type        = string
+  default     = "argo-cd"
+}
+
+variable "chart_version" {
+  description = "Version of the Argo CD Helm chart"
+  type        = string
+}
+
+variable "create_namespace" {
+  description = "Whether to create the namespace if it does not exist"
+  type        = bool
+  default     = true
+}
+
+variable "service_type" {
+  description = "Service type for the Argo CD server (LoadBalancer, ClusterIP, etc.)"
+  type        = string
+  default     = "LoadBalancer"
+
+  validation {
+    condition     = contains(["LoadBalancer", "ClusterIP", "NodePort"], var.service_type)
+    error_message = "service_type must be one of LoadBalancer, ClusterIP, or NodePort."
+  }
+}
+
+variable "extra_args" {
+  description = "Extra arguments to pass to the Argo CD server"
+  type        = list(string)
+  default     = ["--insecure"]
+}
+
+variable "argo_namespace" {
+  description = "Namespace to deploy Argo CD into"
+  type        = string
+  default     = "argocd"
+}
