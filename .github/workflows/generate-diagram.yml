@@ -1,0 +1,39 @@
+name: 📊 Auto-Generate Architecture Diagram
+
+on:
+  push:
+    branches: *
+  workflow_dispatch:
+
+jobs:
+  generate-diagram:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧠 Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 🧠 Install Eraser CLI
+        run: npm install -g @eraser-ai/cli
+
+      - name: 📊 Generate architecture diagram
+        run: eraser generate docs/architecture.eraser.md --output docs/architecture.png
+
+      - name: 📝 Ensure README contains diagram section
+        run: |
+          if ! grep -q "## 📊 Architecture Diagram" README.md; then
+            echo -e "\n## 📊 Architecture Diagram\n\n![Architecture Diagram](docs/architecture.png)\n" >> README.md
+          fi
+
+      - name: 📤 Commit updated diagram and README
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update architecture diagram"
+          file_pattern: |
+            docs/architecture.png
+            README.md

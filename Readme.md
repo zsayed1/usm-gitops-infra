@@ -9,6 +9,11 @@ A Terraform module to provision a complete GitOps-ready **EKS platform on AWS**,
 
 ---
 
+## 📊 Architecture Diagram
+
+![Architecture Diagram](docs/architecture.png)
+
+
 ## 📁 Project Structure
 
 ```
@@ -98,7 +103,9 @@ github_repo_filter      = "repo:usmobile/gitops-platform:ref:refs/heads/main"
 ```
 
 ---
-
+```bash
+cd env/dev/
+```
 ### 3️⃣ Initialize Terraform
 
 ```bash
@@ -110,7 +117,7 @@ terraform init
 ### 4️⃣ Review the plan
 
 ```bash
-terraform plan -var-file="terraform.tfvars"
+terraform plan
 ```
 
 ---
@@ -118,7 +125,7 @@ terraform plan -var-file="terraform.tfvars"
 ### 5️⃣ Apply the configuration
 
 ```bash
-terraform apply -var-file="terraform.tfvars" -auto-approve
+terraform apply 
 ```
 
 This will:
@@ -151,7 +158,7 @@ kubectl get nodes
 To destroy all resources:
 
 ```bash
-terraform destroy -var-file="terraform.tfvars" -auto-approve
+terraform destroy
 ```
 
 ---
