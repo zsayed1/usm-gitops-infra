@@ -199,14 +199,14 @@ module "eks_infra" {
 Follow [Semantic Versioning](https://semver.org/):
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v2.0.0
+git push origin v2.0.0
 ```
 
 Then use it like:
 
 ```hcl
-source = "github.com/zsayed1/usm-gitops-infra?ref=v1.0.0"
+source = "github.com/zsayed1/usm-gitops-infra?ref=v2.0.0"
 ```
 
 ---
