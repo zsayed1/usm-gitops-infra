@@ -99,6 +99,11 @@ github_repo_filter      = "repo:usmobile/gitops-platform:ref:refs/heads/main"
 
 ---
 
+### 3️⃣ Change Dir
+```bash
+cd env/dev/
+```
+
 ### 3️⃣ Initialize Terraform
 
 ```bash
@@ -110,7 +115,7 @@ terraform init
 ### 4️⃣ Review the plan
 
 ```bash
-terraform plan -var-file="terraform.tfvars"
+terraform plan 
 ```
 
 ---
@@ -118,7 +123,7 @@ terraform plan -var-file="terraform.tfvars"
 ### 5️⃣ Apply the configuration
 
 ```bash
-terraform apply -var-file="terraform.tfvars" -auto-approve
+terraform apply
 ```
 
 This will:
@@ -151,7 +156,7 @@ kubectl get nodes
 To destroy all resources:
 
 ```bash
-terraform destroy -var-file="terraform.tfvars" -auto-approve
+terraform destroy 
 ```
 
 ---
