@@ -216,7 +216,7 @@ source = "github.com/zsayed1/usm-gitops-infra?ref=v2.0.0"
 
 ---
 
-# 🔬 GitHub Actions CI Tests for Terraform Module
+## 🔬 GitHub Actions CI Tests for Terraform Module
 
 This repository uses **GitHub Actions** to automatically test, validate, and secure every pull request and push to the `main` branch. The CI pipeline ensures that the Terraform code in this module is always production-ready before it’s merged or released.
 
