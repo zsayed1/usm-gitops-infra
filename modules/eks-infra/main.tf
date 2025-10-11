@@ -17,6 +17,17 @@ module "vpc" {
   enable_nat_gateway       = true
   single_nat_gateway       = true
 
+  public_subnet_tags = {
+    "kubernetes.io/cluster/${var.namespace}-${var.stage}-eks-new" = "shared"
+    "kubernetes.io/role/elb" = "1"
+    
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/cluster/${var.namespace}-${var.stage}-eks-new" = "shared"
+    "kubernetes.io/role/internal-elb" = "1"
+
+  }
   enable_flow_log                                = true
   flow_log_traffic_type                          = "ALL"
   flow_log_destination_type                      = "cloud-watch-logs"
@@ -44,7 +55,7 @@ module "eks" {
   kubernetes_version  = var.cluster_version
 
   vpc_id              = module.vpc.vpc_id
-  subnet_ids          = module.vpc.private_subnets
+  subnet_ids          = concat(module.vpc.private_subnets, module.vpc.public_subnets)
 
   enable_irsa         = true
   addons = {
@@ -75,6 +86,7 @@ module "eks" {
       min_size       = var.node_min_size
       max_size       = var.node_max_size
       capacity_type  = var.node_capacity_type
+      subnet_ids     = module.vpc.private_subnets
     }
   }
 
