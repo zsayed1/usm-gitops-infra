@@ -161,11 +161,6 @@ variable "node_max_size" {
   description = "Maximum number of nodes in the managed node group"
   type        = number
   default     = 3
-
-  validation {
-    condition     = var.node_max_size >= var.node_desired_size
-    error_message = "Max size must be >= desired size."
-  }
 }
 
 variable "node_capacity_type" {
