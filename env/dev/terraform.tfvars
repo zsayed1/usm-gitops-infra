@@ -35,8 +35,8 @@ node_capacity_type  = "ON_DEMAND"
 ##############################
 # ECR Settings
 ##############################
-ecr_app_name  = "test-app-repo"
-ecr_helm_name = "test-helm-repo"
+ecr_app_name  = "usm-app"
+ecr_helm_name = "helm-usm-app"
 
 ##############################
 # GitHub OIDC Settings
