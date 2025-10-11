@@ -2,8 +2,9 @@ name: 📊 Auto-Generate Architecture Diagram
 
 on:
   push:
-    branches: "*"
-  workflow_dispatch:
+    branches:
+      - "**"       
+  # workflow_dispatch:
 
 jobs:
   generate-diagram:
