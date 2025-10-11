@@ -73,3 +73,17 @@ output "github_actions_role_arn" {
   description = "ARN of the IAM role assumed by GitHub Actions"
   value       = module.eks_infra.github_actions_role_arn
 }
+
+##############################
+# 📊 Useful Combined Outputs
+##############################
+
+output "cluster_access_command" {
+  description = "Command to update your kubeconfig and access the EKS cluster"
+  value       = "aws eks update-kubeconfig --region ${var.region} --name ${module.eks_infra.eks_cluster_name}"
+}
+
+output "eks_dashboard_url" {
+  description = "URL of the Kubernetes dashboard (if enabled)"
+  value       = "https://${module.eks_infra.eks_cluster_endpoint}/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"
+}
