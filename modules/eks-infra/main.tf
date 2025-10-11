@@ -3,39 +3,85 @@
 ##############################
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = "~> 5.8"
 
-  name                 = "${var.namespace}-${var.env}-vpc"
-  cidr                = var.vpc_cidr
-  azs                 = var.azs
-  private_subnets     = var.private_subnets
-  public_subnets      = var.public_subnets
-  enable_nat_gateway  = var.enable_nat_gateway
-  single_nat_gateway  = var.single_nat_gateway
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+  name                     = "${var.namespace}-${var.stage}-vpc"
+  cidr                     = var.vpc_cidr
+  azs                      = var.azs
+  private_subnets          = var.private_subnets
+  public_subnets           = var.public_subnets
+  map_public_ip_on_launch  = true
+  enable_dns_support       = true
+  enable_dns_hostnames     = true
 
-  tags = var.tags
+  enable_nat_gateway       = true
+  single_nat_gateway       = true
+
+  enable_flow_log                                = true
+  flow_log_traffic_type                          = "ALL"
+  flow_log_destination_type                      = "cloud-watch-logs"
+  create_flow_log_cloudwatch_log_group           = true
+  create_flow_log_cloudwatch_iam_role            = true
+  flow_log_cloudwatch_log_group_retention_in_days = var.flow_log_retention_days
+
+  tags = merge({
+    Environment = var.stage
+    Terraform   = "true"
+  }, var.tags)
 }
 
+data "aws_caller_identity" "current" {}
+
 ##############################
-# EKS Cluster
+# VPC
 ##############################
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.8"
+  version = "21.3.2"
 
-  cluster_name                     = "${var.namespace}-${var.env}-eks"
-  cluster_version                  = var.cluster_version
-  vpc_id                           = module.vpc.vpc_id
-  subnet_ids                       = module.vpc.private_subnets
-  cluster_endpoint_public_access   = var.cluster_endpoint_public_access
-  cluster_endpoint_private_access  = var.cluster_endpoint_private_access
-  enable_irsa                      = var.enable_irsa
-  cluster_enabled_log_types        = var.cluster_enabled_log_types 
-  eks_managed_node_groups = var.eks_managed_node_groups
+  name                = "${var.namespace}-${var.stage}-eks-new"
+  kubernetes_version  = var.cluster_version
 
-  tags = var.tags
+  vpc_id              = module.vpc.vpc_id
+  subnet_ids          = module.vpc.private_subnets
+
+  enable_irsa         = true
+  addons = {
+    vpc-cni = {
+      most_recent    = true
+      before_compute = true
+    }
+    kube-proxy = { most_recent = true }
+    coredns     = { most_recent = true }
+    eks-pod-identity-agent = {
+      most_recent    = true
+      before_compute = true
+    }
+  }
+
+  endpoint_public_access                   = true
+  endpoint_private_access                  = true
+  enable_cluster_creator_admin_permissions = true
+
+  compute_config = {
+    enabled = true
+  }
+
+  eks_managed_node_groups = {
+    default = {
+      instance_types = var.node_instance_types
+      desired_size   = var.node_desired_size
+      min_size       = var.node_min_size
+      max_size       = var.node_max_size
+      capacity_type  = var.node_capacity_type
+    }
+  }
+
+  tags = merge({
+    Environment = var.stage
+    Terraform   = "true"
+  }, var.tags)
 }
 
 ##############################

@@ -1,99 +1,66 @@
-########################
+##############################
 # VPC Outputs
-########################
-
+##############################
 output "vpc_id" {
-  description = "ID of the VPC created for the EKS cluster."
+  description = "The ID of the VPC"
   value       = module.vpc.vpc_id
 }
 
-output "vpc_cidr_block" {
-  description = "The CIDR block of the VPC."
-  value       = module.vpc.vpc_cidr_block
-}
-
 output "private_subnets" {
-  description = "List of private subnet IDs."
+  description = "The list of private subnets"
   value       = module.vpc.private_subnets
 }
 
 output "public_subnets" {
-  description = "List of public subnet IDs."
+  description = "The list of public subnets"
   value       = module.vpc.public_subnets
 }
 
-########################
-# ☸️ EKS Outputs
-########################
-
+##############################
+# EKS Outputs
+##############################
 output "eks_cluster_name" {
-  description = "The name of the EKS cluster."
+  description = "The name of the EKS cluster"
   value       = module.eks.cluster_name
 }
 
-output "eks_cluster_arn" {
-  description = "ARN of the EKS cluster."
-  value       = module.eks.cluster_arn
-}
-
 output "eks_cluster_endpoint" {
-  description = "API server endpoint of the EKS cluster."
+  description = "The endpoint of the EKS cluster"
   value       = module.eks.cluster_endpoint
 }
 
-output "eks_cluster_version" {
-  description = "The Kubernetes version of the EKS cluster."
-  value       = module.eks.cluster_version
+output "eks_cluster_arn" {
+  description = "The ARN of the EKS cluster"
+  value       = module.eks.cluster_arn
 }
 
-output "eks_oidc_issuer" {
-  description = "The OIDC issuer URL for the EKS cluster."
+output "eks_cluster_oidc_issuer" {
+  description = "The OIDC issuer URL associated with the EKS cluster"
   value       = module.eks.cluster_oidc_issuer_url
 }
 
-output "cluster_certificate_authority_data" {
-  description = "EKS cluster CA data"
-  value       = module.eks.cluster_certificate_authority_data
-}
-
-########################
+##############################
 # ECR Outputs
-########################
-
-output "ecr_app_repository_url" {
-  description = "The URL of the ECR repository for application Docker images."
+##############################
+output "ecr_app_repo_url" {
+  description = "URL of the ECR app image repository"
   value       = aws_ecr_repository.app_repo.repository_url
 }
 
-output "ecr_helm_repository_url" {
-  description = "The URL of the ECR OCI repository for Helm charts."
+output "ecr_helm_repo_url" {
+  description = "URL of the ECR Helm repository"
   value       = aws_ecr_repository.helm_repo.repository_url
 }
 
-########################
-# 🔐 GitHub OIDC IAM Outputs
-########################
-
+##############################
+# IAM & GitHub OIDC Outputs
+##############################
 output "github_oidc_provider_arn" {
-  description = "ARN of the GitHub OIDC provider."
+  description = "ARN of the GitHub OIDC provider"
   value       = aws_iam_openid_connect_provider.github.arn
 }
 
 output "github_actions_role_arn" {
-  description = "ARN of the IAM role GitHub Actions assumes to push to ECR."
+  description = "ARN of the IAM role for GitHub Actions"
   value       = aws_iam_role.github_actions.arn
 }
-
-########################
-# Node Group Info
-########################
-
-output "eks_node_group_arns" {
-  description = "List of ARNs for the EKS managed node groups."
-  value       = [for ng in module.eks.eks_managed_node_groups : ng.node_group_arn]
-}
-
-# output "eks_node_group_names" {
-#   description = "List of EKS managed node group names."
-#   value       = [for ng in module.eks.eks_managed_node_groups : ng.node_group_name]
-# }
