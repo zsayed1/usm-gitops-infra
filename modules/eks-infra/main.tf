@@ -193,7 +193,13 @@ data "aws_iam_policy_document" "github_ecr_policy" {
       "ecr:DescribeRepositories",
       "ecr:DescribeImages",
       "ecr:ListImages",
-      "ecr:BatchDeleteImage"
+      "ecr:BatchDeleteImage",
+      "ecr:CreateRepository",              
+      "ecr:SetRepositoryPolicy",          
+      "ecr:GetRepositoryPolicy",          
+      "ecr:PutImageTagMutability",        
+      "ecr:PutLifecyclePolicy",           
+      "ecr:DeleteRepository"               
     ]
     resources = ["*"]
   }
