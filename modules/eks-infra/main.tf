@@ -183,6 +183,7 @@ resource "aws_iam_role_policy_attachment" "github_attach_ecr" {
 data "aws_iam_policy_document" "github_ecr_policy" {
   statement {
     actions = [
+      # Standard Docker push/pull
       "ecr:GetAuthorizationToken",
       "ecr:BatchCheckLayerAvailability",
       "ecr:CompleteLayerUpload",
@@ -193,14 +194,17 @@ data "aws_iam_policy_document" "github_ecr_policy" {
       "ecr:DescribeRepositories",
       "ecr:DescribeImages",
       "ecr:ListImages",
+      "ecr:BatchGetImage",
       "ecr:BatchDeleteImage",
-      "ecr:CreateRepository",          
-      "ecr:SetRepositoryPolicy",   
-      "ecr:GetRepositoryPolicy",           
-      "ecr:PutImageTagMutability",     
-      "ecr:PutLifecyclePolicy",          
-      "ecr:DeleteRepository"               
+      "ecr:GetRepositoryPolicy",
+      "ecr:SetRepositoryPolicy",
+      "ecr:PutImageTagMutability",
+      "ecr:CreateRepository",
+      "ecr:DeleteRepository",
+      "ecr:PutLifecyclePolicy",
+      "ecr:DescribeRegistry"
     ]
     resources = ["*"]
   }
 }
+
